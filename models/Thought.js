@@ -59,7 +59,7 @@ thoughtSchema.virtual('reactionCount').get(function () {
 
 //function used by getter method to format dates
 function formatDate(date) {
-    return `${new Date(date).getMonth() + 1}/${new Date(date).getDate()}/${new Date(date).getFullYear() + 5}`;
+    return `${new Date(date).getMonth() + 1}/${new Date(date).getDate()}/${new Date(date).getFullYear()}`;
 }
 
 const Thought = model('thought', thoughtSchema);
