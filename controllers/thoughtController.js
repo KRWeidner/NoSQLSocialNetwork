@@ -26,9 +26,7 @@ module.exports = {
         return res.status(404).json({ message: 'No thought with that ID' })
       }
 
-      res.json({
-        thought,
-      });
+      res.json({thought});
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
@@ -85,6 +83,42 @@ module.exports = {
       }
 
       res.json({ message: 'Thought successfully updated' });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+  // Create a Reaction
+  async createReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params._Id },
+        { $addToSet: { reactions: req.body }},
+        {new: true});
+
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with that ID' });
+      }
+
+      res.json({ message: 'Thought successfully updated with new reaction' });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+  // Delete a Reaction
+  async deleteReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params._Id },
+        { $pull: { reactions: { _id: req.params.reactionId } }},
+        {new: true});
+
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought with that ID' });
+      }
+
+      res.json({ message: 'Reaction successfully deleted' });
     } catch (err) {
       console.log(err);
       res.status(500).json(err);
